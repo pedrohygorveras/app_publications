@@ -25,15 +25,19 @@ services:
     container_name: backend
     ports:
       - "3021:3021"
-    depends_on:
-      db_postgres:
-        condition: service_healthy
     volumes:
       - ./backend/src:/app/src
       - ./backend/prisma:/app/prisma
     env_file:
       - ./backend/.env
-    command: npm run build
+    depends_on:
+      - db_postgres
+    entrypoint:
+      [
+        "sh",
+        "-c",
+        "until pg_isready -h db_postgres -U admin -d db_publications; do echo waiting for db; sleep 5; done; npm run build",
+      ]
 
 volumes:
   db_postgres_data:
