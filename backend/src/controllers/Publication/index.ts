@@ -2,13 +2,13 @@
 
 import { Request, Response } from "express";
 import { validationResult, Result } from "express-validator";
-
 import PublicationServices from "../../services/Publication";
 import {
   PublicationGetAllProps,
   PublicationCreateProps,
   PublicationUpdateProps,
 } from "../../../interfaces/Publication.types";
+import helpers from "../../helpers/";
 
 class PublicationController {
   constructor() {}
@@ -34,15 +34,15 @@ class PublicationController {
   }
 
   async getAll(req: Request, res: Response): Promise<Response> {
+    const { parseQueryValue, parseStatus } = helpers.publications;
+
     const filters: PublicationGetAllProps = {
-      limit: req.query.limit ? parseInt(req.query.limit as string) : 25,
-      index: req.query.index ? parseInt(req.query.index as string) : 0,
-      status: req.query.status ? (req.query.status as string) : undefined,
-      search: req.query.search ? (req.query.search as string) : undefined,
-      start_date: req.query.start_date
-        ? (req.query.start_date as string)
-        : undefined,
-      end_date: req.query.end_date ? (req.query.end_date as string) : undefined,
+      limit: parseQueryValue(req.query.limit, (v) => parseInt(v, 10), 25),
+      index: parseQueryValue(req.query.index, (v) => parseInt(v, 10), 0),
+      search: parseQueryValue(req.query.search, (v) => v as string),
+      status: parseStatus(req.query.status),
+      start_date: parseQueryValue(req.query.start_date, (v) => v as string),
+      end_date: parseQueryValue(req.query.end_date, (v) => v as string),
     };
 
     try {

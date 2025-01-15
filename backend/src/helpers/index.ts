@@ -1,7 +1,7 @@
 "use strict";
 
 import jwt from "jsonwebtoken";
-
+import { Status } from "@prisma/client";
 import env from "../../environments";
 
 const oauth = {
@@ -44,6 +44,23 @@ const oauth = {
   },
 };
 
+const publications = {
+  parseQueryValue<T>(
+    value: any,
+    parser: (val: any) => T,
+    defaultValue?: T
+  ): T | undefined {
+    return value ? parser(value) : defaultValue;
+  },
+
+  parseStatus(value: any): Status | undefined {
+    return Object.values(Status).includes(value as Status)
+      ? (value as Status)
+      : undefined;
+  },
+};
+
 export default {
   oauth,
+  publications,
 };
