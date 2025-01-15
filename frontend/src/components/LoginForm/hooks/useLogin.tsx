@@ -1,7 +1,12 @@
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { useNotifyError } from "@/hooks/useNotifyError";
+import { signIn } from "@/services/auth";
+import { useAuthContext } from "@/contexts/Auth/useContext";
 
 export const useLogin = () => {
+  const { login } = useAuthContext();
+  const { notifyError } = useNotifyError();
   const navigate = useNavigate();
 
   const initialValues = {
@@ -16,9 +21,21 @@ export const useLogin = () => {
     password: Yup.string().required("Senha é obrigatória"),
   });
 
-  const onSubmit = (values: typeof initialValues) => {
-    console.log("Login Form Values:", values);
+  const onSubmit = async (values: typeof initialValues) => {
+    const { email, password } = values;
 
+    const result = await signIn({
+      email: email,
+      password: password,
+    });
+
+    if (result.error) {
+      return notifyError(result.data);
+    }
+
+    const data: any = result.data;
+
+    login(data);
     navigate("/home");
   };
 

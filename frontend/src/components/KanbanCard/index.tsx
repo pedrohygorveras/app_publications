@@ -3,7 +3,12 @@ import { openModalPublication } from "@/actions/ModalPublication";
 import { FaRegCalendar, FaRegClock } from "react-icons/fa";
 
 interface KanbanCardProps {
-  item: { id: string; content: string; time: string; date: string };
+  item: {
+    publication_id: string;
+    content: string;
+    publication_date: string;
+    created_at: string;
+  };
   onDragStart: (event: React.DragEvent, itemId: string) => void;
   onDragEnd: () => void;
   isDragging: boolean;
@@ -16,7 +21,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   isDragging,
 }) => {
   const handleDragStart = (event: React.DragEvent) => {
-    onDragStart(event, item.id);
+    onDragStart(event, item.publication_id);
   };
 
   return (
@@ -35,11 +40,14 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
       <div className="mt-3 grid grid-cols-2">
         <p className="flex items-center gap-1 truncate text-xs text-gray-500">
           <FaRegClock />
-          {item.time}
+          {new Date(item.created_at).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
         </p>
         <p className="flex items-center gap-1 truncate text-xs text-gray-500">
           <FaRegCalendar />
-          {item.date}
+          {new Date(item.publication_date).toLocaleDateString()}
         </p>
       </div>
     </button>

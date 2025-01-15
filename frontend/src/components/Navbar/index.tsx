@@ -1,9 +1,17 @@
 import React from "react";
 import { Logo } from "@/components/Logo";
 import { CgLogOut } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "@/contexts/Auth/useContext";
 
 export const Navbar: React.FC = () => {
-  const handleLogout = () => {};
+  const { logout } = useAuthContext();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <nav className="bg-white border-b border-base-200">

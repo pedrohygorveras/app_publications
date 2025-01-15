@@ -1,6 +1,14 @@
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { useNotifyError } from "@/hooks/useNotifyError";
+import { register } from "@/services/auth";
+import { useAuthContext } from "@/contexts/Auth/useContext";
 
 export const useRegister = () => {
+  const { login } = useAuthContext();
+  const { notifyError } = useNotifyError();
+  const navigate = useNavigate();
+
   const initialValues = {
     fullName: "",
     email: "",
@@ -30,8 +38,23 @@ export const useRegister = () => {
       .required("A confirmação de senha é obrigatória"),
   });
 
-  const onSubmit = (values: typeof initialValues) => {
-    console.log("Formulário de Cadastro:", values);
+  const onSubmit = async (values: typeof initialValues) => {
+    const { fullName, email, password } = values;
+
+    const result = await register({
+      name: fullName,
+      email,
+      password,
+    });
+
+    if (result.error) {
+      return notifyError(result.data);
+    }
+
+    const data: any = result.data;
+
+    login(data);
+    navigate("/home");
   };
 
   return { initialValues, validationSchema, onSubmit };

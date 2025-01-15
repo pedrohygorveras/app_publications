@@ -1,24 +1,29 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-// import { authService } from "../services/authService";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/contexts/Auth/useContext";
 
 export const useAuthentication = () => {
-  const { user, isAuthenticated } = useAuthContext();
+  const { user, logout } = useAuthContext();
+  const navigate = useNavigate();
 
-  const [logged, setLogged] = useState<"logged" | "not_logged" | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const location = useLocation();
 
   useEffect(() => {
     const checkAuthentication = async () => {
-      isAuthenticated === true ? setLogged("logged") : setLogged("not_logged");
+      if (user) {
+        setLoading(false);
+      } else {
+        logout();
+        navigate("/login");
+      }
     };
 
-    setLogged(null);
+    setLoading(false);
     checkAuthentication();
-  }, [user, location]);
+  }, [location]);
 
   return {
-    logged,
+    loading,
   };
 };

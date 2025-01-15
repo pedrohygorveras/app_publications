@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useKanbanContext } from "@/contexts/Kanban/useContext";
+import { useEffect, useState } from "react";
 
 type KanbanItem = {
-  id: string;
+  publication_id: string;
+  process_number: string;
+  publication_date: string;
+  author: string;
+  lawyer: string;
   content: string;
-  time: string;
-  date: string;
+  principal_value: string;
+  interest_value: string;
+  lawyer_fees: string;
+  defendant: string;
+  status: "new" | "read" | "sent_to_lawyer" | "completed";
+  created_at: string;
+  updated_at: string;
 };
 
 type KanbanColumnType = {
@@ -18,65 +28,7 @@ type KanbanColumns = {
 };
 
 export const useKanbanBoard = () => {
-  const [columns, setColumns] = useState<KanbanColumns>({
-    newPublication: {
-      title: "Nova Publicação",
-      type: "new",
-      items: [
-        {
-          id: "1",
-          content: "5018120-21.2021.8.13.0022",
-          time: "3h",
-          date: "27/01/2024",
-        },
-        {
-          id: "1",
-          content: "5018120-21.2021.8.13.0022",
-          time: "3h",
-          date: "27/01/2024",
-        },
-        {
-          id: "1",
-          content: "5018120-21.2021.8.13.0022",
-          time: "3h",
-          date: "27/01/2024",
-        },
-        {
-          id: "1",
-          content: "5018120-21.2021.8.13.0022",
-          time: "3h",
-          date: "27/01/2024",
-        },
-        {
-          id: "1",
-          content: "5018120-21.2021.8.13.0022",
-          time: "3h",
-          date: "27/01/2024",
-        },
-        {
-          id: "1",
-          content: "5018120-21.2021.8.13.0022",
-          time: "3h",
-          date: "27/01/2024",
-        },
-      ],
-    },
-    readPublication: {
-      title: "Publicação Lida",
-      type: "read",
-      items: [],
-    },
-    toSendToLawyer: {
-      title: "Enviar para Advogado Responsável",
-      type: "sent_to_lawyer",
-      items: [],
-    },
-    concluded: {
-      title: "Concluído",
-      type: "completed",
-      items: [],
-    },
-  });
+  const { refresh, columns, setColumns } = useKanbanContext();
 
   const [draggingItemId, setDraggingItemId] = useState<string | null>(null);
 
@@ -86,11 +38,13 @@ export const useKanbanBoard = () => {
   };
 
   const handleDrop = (event: React.DragEvent, targetColumnId: string) => {
+    if (!columns) return;
+
     const itemId = event.dataTransfer.getData("itemId");
     if (!itemId) return;
 
     const sourceColumnId = Object.keys(columns).find((colId) =>
-      columns[colId].items.some((item) => item.id === itemId)
+      columns[colId].items.some((item) => item.publication_id === itemId)
     );
 
     if (!sourceColumnId || sourceColumnId === targetColumnId) return;
@@ -119,7 +73,9 @@ export const useKanbanBoard = () => {
     const sourceItems = [...columns[sourceColumnId].items];
     const targetItems = [...columns[targetColumnId].items];
 
-    const itemIndex = sourceItems.findIndex((item) => item.id === itemId);
+    const itemIndex = sourceItems.findIndex(
+      (item) => item.publication_id === itemId
+    );
     if (itemIndex === -1) return columns;
 
     const [movedItem] = sourceItems.splice(itemIndex, 1);
@@ -131,6 +87,10 @@ export const useKanbanBoard = () => {
       [targetColumnId]: { ...columns[targetColumnId], items: targetItems },
     };
   };
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
 
   return {
     columns,

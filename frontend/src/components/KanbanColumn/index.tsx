@@ -7,7 +7,21 @@ type KanbanColumnProps = {
   column: {
     title: string;
     type: "new" | "read" | "sent_to_lawyer" | "completed";
-    items: { id: string; content: string; time: string; date: string }[];
+    items: {
+      publication_id: string;
+      process_number: string;
+      publication_date: string;
+      author: string;
+      lawyer: string;
+      content: string;
+      principal_value: string;
+      interest_value: string;
+      lawyer_fees: string;
+      defendant: string;
+      status: "new" | "read" | "sent_to_lawyer" | "completed";
+      created_at: string;
+      updated_at: string;
+    }[];
   };
   onDragStart: (event: React.DragEvent, itemId: string) => void;
   onDrop: (event: React.DragEvent, columnId: string) => void;
@@ -55,11 +69,11 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
             {items.length > 0 ? (
               items.map((item) => (
                 <KanbanCard
-                  key={item.id}
+                  key={item.publication_id}
                   item={item}
                   onDragStart={onDragStart}
                   onDragEnd={onDragEnd}
-                  isDragging={draggingItemId === item.id}
+                  isDragging={draggingItemId === item.publication_id}
                 />
               ))
             ) : (

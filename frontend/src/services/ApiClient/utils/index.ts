@@ -9,3 +9,15 @@ export const formatResponse = (response: ResponseProps) => {
     error: error,
   };
 };
+
+export const parseResponse = async (response: Response) => {
+  const contentType = response.headers.get("Content-Type") || "";
+  if (contentType.includes("application/json")) {
+    try {
+      return await response.json();
+    } catch (error) {
+      return null;
+    }
+  }
+  return response.text();
+};

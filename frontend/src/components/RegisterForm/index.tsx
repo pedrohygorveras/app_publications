@@ -14,7 +14,7 @@ export const RegisterForm: React.FC = () => {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      {() => (
+      {({ isSubmitting }) => (
         <Form className="w-full max-w-sm space-y-4">
           <InputField
             label="Seu nome completo:"
@@ -62,9 +62,14 @@ export const RegisterForm: React.FC = () => {
           <div className="text-center">
             <button
               type="submit"
-              className="btn btn-secondary font-bold text-white min-w-40 mt-6"
+              className="bg-secondary font-semibold text-white min-w-48 min-h-12 rounded-md mt-6 outline-none"
+              disabled={isSubmitting}
             >
-              CRIAR CONTA
+              {isSubmitting ? (
+                <span className="loading loading-dots loading-md text-white"></span>
+              ) : (
+                "CRIAR CONTA"
+              )}
             </button>
           </div>
         </Form>

@@ -1,5 +1,5 @@
 import { RequestOptionsProps, ResponseProps } from "./types/ApiClient.types";
-import { formatResponse } from "./utils";
+import { formatResponse, parseResponse } from "./utils";
 
 export class ApiClient {
   private baseUrl: string;
@@ -24,12 +24,12 @@ export class ApiClient {
         },
       });
 
-      const data = await response.json();
+      const data = await parseResponse(response);
 
       if (!response.ok) {
         return formatResponse({
           status: response.status,
-          data: data?.message || "An error occurred",
+          data: data?.message || data?.error || "An error occurred",
           error: true,
         });
       }

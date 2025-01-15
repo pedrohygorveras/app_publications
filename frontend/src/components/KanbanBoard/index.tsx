@@ -13,17 +13,18 @@ export const KanbanBoard: React.FC = () => {
 
   return (
     <div className="flex overflow-auto gap-4 p-4">
-      {Object.entries(columns).map(([columnId, column]) => (
-        <KanbanColumn
-          key={columnId}
-          columnId={columnId}
-          column={column}
-          onDragStart={handleDragStart}
-          onDrop={handleDrop}
-          onDragEnd={handleDragEnd}
-          draggingItemId={draggingItemId}
-        />
-      ))}
+      {columns &&
+        Object.entries(columns).map(([columnId, column]) => (
+          <KanbanColumn
+            key={columnId}
+            columnId={columnId}
+            column={column}
+            onDragStart={handleDragStart}
+            onDrop={handleDrop}
+            onDragEnd={handleDragEnd}
+            draggingItemId={draggingItemId}
+          />
+        ))}
     </div>
   );
 };
