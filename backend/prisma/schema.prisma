@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id       String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password_hash String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  publications         Publication[]
+  publicationHistories PublicationHistory[]
+}
+
+model Publication {
+  publication_id   String   @id @default(uuid())
+  process_number   String
+  publication_date DateTime
+  author           String
+  lawyer           String
+  content          String
+  principal_value  Decimal
+  interest_value   Decimal
+  lawyer_fees      Decimal
+  defendant        String
+  status           Status
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  history       PublicationHistory[]
+  authorDetails User                 @relation(fields: [author], references: [user_id])
+}
+
+model PublicationHistory {
+  publication_history_id String   @id @default(uuid())
+  updated_by_user_id     String
+  publication_id         String
+  status                 Status
+  created_at             DateTime @default(now())
+  updated_at             DateTime @updatedAt
+
+  updatedByUser User        @relation(fields: [updated_by_user_id], references: [user_id])
+  publication   Publication @relation(fields: [publication_id], references: [publication_id])
+}
+
+enum Status {
+  new
+  read
+  sent_to_lawyer
+  completed
+}
