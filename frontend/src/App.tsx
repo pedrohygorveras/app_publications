@@ -1,9 +1,11 @@
 import React from "react";
+import { AppRouter } from "@/routes/AppRouter";
+import { AuthProvider } from "./contexts/Auth/Provider";
 
 export const App: React.FC = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <h1>JusCash</h1>
-    </div>
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
   );
 };
