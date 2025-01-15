@@ -37,6 +37,7 @@ class PublicationController {
     const filters: PublicationGetAllProps = {
       limit: req.query.limit ? parseInt(req.query.limit as string) : 25,
       index: req.query.index ? parseInt(req.query.index as string) : 0,
+      status: req.query.status ? (req.query.status as string) : undefined,
       search: req.query.search ? (req.query.search as string) : undefined,
       start_date: req.query.start_date
         ? (req.query.start_date as string)

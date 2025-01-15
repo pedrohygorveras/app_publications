@@ -6,6 +6,7 @@ interface PublicationGetAllProps {
   search?: any;
   start_date?: any;
   end_date?: any;
+  status?: any;
 }
 
 interface PublicationCreateProps {

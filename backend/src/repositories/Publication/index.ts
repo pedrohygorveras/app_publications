@@ -34,7 +34,7 @@ class PublicationRepository {
 
   async getAll(filters: PublicationGetAllProps) {
     try {
-      const { index, limit, search, start_date, end_date } = filters;
+      const { index, limit, status, search, start_date, end_date } = filters;
 
       const publications = await this.prisma.publication.findMany({
         where: {
@@ -50,6 +50,9 @@ class PublicationRepository {
                 gte: start_date ? new Date(start_date) : undefined,
                 lte: end_date ? new Date(end_date) : undefined,
               },
+            },
+            {
+              status: status || undefined,
             },
           ],
         },
