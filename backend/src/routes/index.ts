@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import ApiRoutes from "./Api";
 import OAuthRoutes from "./OAuth";
-// import UserRoutes from "./User";
+import PublicationRoutes from "./Publication";
 
 class Routes {
   public routes: Router;
@@ -15,7 +15,7 @@ class Routes {
   private endpoints(): void {
     this.routes.use("/", ApiRoutes);
     this.routes.use("/oauth", OAuthRoutes);
-    // this.routes.use("/user", UserRoutes);
+    this.routes.use("/publication", PublicationRoutes);
   }
 }
 
