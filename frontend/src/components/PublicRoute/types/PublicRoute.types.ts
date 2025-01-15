@@ -1,3 +1,3 @@
-export interface PublicRouteProps {
+export type PublicRouteProps = {
   children: React.ReactNode;
-}
+};

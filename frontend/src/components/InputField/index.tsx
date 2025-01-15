@@ -3,16 +3,16 @@ import { Field, ErrorMessage } from "formik";
 import { IconType } from "react-icons";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 
-interface InputFieldProps {
-  label: string;
+type InputFieldProps = {
+  label?: string;
   name: string;
   type: string;
-  placeholder: string;
+  placeholder?: string;
   autoComplete?: string;
   required?: boolean;
   Icon?: IconType;
   [key: string]: any;
-}
+};
 
 export const InputField: React.FC<InputFieldProps> = ({
   label,
@@ -34,12 +34,14 @@ export const InputField: React.FC<InputFieldProps> = ({
 
   return (
     <div className="mb-4">
-      <label
-        htmlFor={name}
-        className="block text-sm font-medium text-primary mb-1.5"
-      >
-        {label} {required && <span className="text-red-600">*</span>}
-      </label>
+      {label && (
+        <label
+          htmlFor={name}
+          className="block text-sm font-medium text-primary mb-1.5"
+        >
+          {label} {required && <span className="text-red-600">*</span>}
+        </label>
+      )}
       <div className="relative">
         <Field
           id={name}

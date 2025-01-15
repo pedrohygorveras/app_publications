@@ -47,9 +47,6 @@ export const LoginForm: React.FC = () => {
               Não possui uma conta? Cadastre-se
             </Link>
           </div>
-          {/* 
-          
-           */}
         </Form>
       )}
     </Formik>

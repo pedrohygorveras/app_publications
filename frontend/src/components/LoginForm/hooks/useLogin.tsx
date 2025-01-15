@@ -1,6 +1,9 @@
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 export const useLogin = () => {
+  const navigate = useNavigate();
+
   const initialValues = {
     email: "",
     password: "",
@@ -15,6 +18,8 @@ export const useLogin = () => {
 
   const onSubmit = (values: typeof initialValues) => {
     console.log("Login Form Values:", values);
+
+    navigate("/home");
   };
 
   return { initialValues, validationSchema, onSubmit };
