@@ -12,6 +12,7 @@ COPY . /app
 ENV NODE_ENV=production
 
 RUN npx prisma generate
+RUN npx prisma migrate dev
 
 EXPOSE 3021
 
