@@ -34,6 +34,14 @@ const oauth = {
       };
     });
   },
+
+  verifyToken: (token: string): any => {
+    try {
+      return jwt.verify(token, env.SECRET);
+    } catch (error: any) {
+      throw new Error("Invalid or expired token");
+    }
+  },
 };
 
 export default {
