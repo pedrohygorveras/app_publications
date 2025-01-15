@@ -12,11 +12,6 @@ services:
       POSTGRES_DB: db_publications
     volumes:
       - db_postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d db_publications"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   backend:
     build:
@@ -32,12 +27,7 @@ services:
       - ./backend/.env
     depends_on:
       - db_postgres
-    entrypoint:
-      [
-        "sh",
-        "-c",
-        "until pg_isready -h db_postgres -U admin -d db_publications; do echo waiting for db; sleep 5; done; npm run build",
-      ]
+    entrypoint: ["sh", "-c", "sleep 10 && npx prisma generate && npm run build"]
 
 volumes:
   db_postgres_data:
