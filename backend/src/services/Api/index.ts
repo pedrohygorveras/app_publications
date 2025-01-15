@@ -23,9 +23,7 @@ class ApiServices {
         version: APP_VERSION,
       };
     } catch (error: any) {
-      return {
-        error: error?.message,
-      };
+      throw error;
     }
   }
 }

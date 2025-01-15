@@ -20,22 +20,22 @@ model User {
 }
 
 model Publication {
-  publication_id   String   @id @default(uuid())
-  process_number   String
-  publication_date DateTime
-  author           String
-  lawyer           String
-  content          String
-  principal_value  Decimal
-  interest_value   Decimal
-  lawyer_fees      Decimal
-  defendant        String
+  publication_id   String    @id @default(uuid())
+  process_number   String?
+  publication_date DateTime?
+  author           String?
+  lawyer           String?
+  content          String?
+  principal_value  Decimal?
+  interest_value   Decimal?
+  lawyer_fees      Decimal?
+  defendant        String?
   status           Status
-  created_at       DateTime @default(now())
-  updated_at       DateTime @updatedAt
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
 
   history       PublicationHistory[]
-  authorDetails User                 @relation(fields: [author], references: [user_id])
+  authorDetails User?                @relation(fields: [author], references: [user_id])
 }
 
 model PublicationHistory {
