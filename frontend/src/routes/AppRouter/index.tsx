@@ -21,7 +21,7 @@ const AppRouter: React.FC = () => {
       <Routes>
         {renderRoutes(publicRoutes)}
         {renderRoutes(privateRoutes)}
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>
   );
