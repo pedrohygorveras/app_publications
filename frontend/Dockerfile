@@ -6,8 +6,9 @@ WORKDIR /usr/app
 COPY . .
 
 RUN npm init -y
-RUN npm install express
+RUN npm install express --legacy-peer-deps
 RUN npm install nodemon -g
+
 
 ENV PATH /usr/local/bin:$PATH
 
