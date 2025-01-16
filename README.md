@@ -1,96 +1,159 @@
-# Projeto: Automação de Publicações do DJE
+# JusCash - Gerenciamento de Publicações do DJE
 
-## Visão Geral do Projeto
+Sistema para scraping, gerenciamento e visualização de publicações do Diário da Justiça Eletrônico de São Paulo.
 
-Este projeto tem como objetivo criar um sistema para automação, gerenciamento e processamento de publicações extraídas do Diário da Justiça Eletrônico (DJE) de São Paulo. Ele é dividido em **Backend (Python/Node.js)** e **Frontend (React)**, oferecendo uma interface intuitiva baseada em Kanban.
+## 🌐 Links do Projeto
 
----
+- **Aplicação Front-end**: [Acesse a aplicação aqui](https://frontend.pedrohygorveras.ip-ddns.com/docs/)
+- **Documentação da API**: [Swagger](https://backend.pedrohygorveras.ip-ddns.com/docs/)
 
-### Funcionalidades Implementadas
-
-#### Backend
-- [ ] Automação para Web Scraping no DJE:
-  - [ ] Acessar o site do DJE e buscar publicações filtrando por **Caderno 3 - Judicial - 1ª Instância - Capital Parte 1**.
-  - [ ] Extrair informações como:
-    - [ ] Número do processo.
-    - [ ] Data de disponibilização.
-    - [ ] Autor(es), Advogado(s), e réu fixo: "Instituto Nacional do Seguro Social - INSS".
-    - [ ] Conteúdo completo da publicação.
-    - [ ] Valores (bruto/líquido, juros moratórios, honorários).
-  - [ ] Salvar as informações no banco de dados com status inicial como "nova".
-  - [ ] Caso algum dado esteja ausente, retornar vazio/nulo.
-
-- [ ] Estrutura do Banco de Dados:
-  - [ ] Organizar dados para fácil consulta e atualização de status.
-  - [ ] Permitir atualização de status (nova, lida, processada).
-
-- [ ] API para Gerenciamento de Dados:
-  - [ ] Endpoints para:
-    - [ ] Buscar publicações com filtros (número, data, status).
-    - [ ] Atualizar status da publicação.
-  - [ ] Implementar autenticação e segurança.
-  - [ ] Garantir escalabilidade e bom desempenho.
-
-#### Frontend
-- [ ] Tela de Login:
-  - [ ] Campos para e-mail e senha.
-  - [ ] Mensagens de erro claras (e.g., credenciais inválidas, falha no servidor).
-  - [ ] Redirecionamento para a tela principal (Kanban) após login bem-sucedido.
-
-- [ ] Tela de Cadastro:
-  - [ ] Campos para nome, e-mail, senha e confirmação de senha.
-  - [ ] Validação de senha com critérios específicos.
-  - [ ] Mensagens de erro claras para validações.
-
-- [ ] Kanban para Gerenciamento de Publicações:
-  - [ ] Colunas:
-    - [ ] Publicações Novas.
-    - [ ] Publicações Lidas.
-    - [ ] Enviadas para ADV.
-    - [ ] Concluídas.
-  - [ ] Funcionalidade de arrastar e soltar (drag and drop) com restrições.
-  - [ ] Scroll infinito e carregamento incremental.
-
-- [ ] Modal de Detalhes:
-  - [ ] Exibição de informações completas da publicação em modo leitura.
-
-- [ ] Barra de Busca e Filtros:
-  - [ ] Pesquisa por número do processo ou partes envolvidas.
-  - [ ] Filtros por intervalo de datas.
-
-- [ ] Navbar:
-  - [ ] Exibir logo e botão de logout.
+Explore todos os endpoints da API de forma interativa.
 
 ---
 
-### Checklist de Entrega
+## 📂 Estrutura do Projeto
 
-- [ ] **Repositório no GitHub:**
-  - [ ] Código completo e versionado.
-  - [ ] Dockerfile funcional.
+O projeto está dividido em três componentes principais:
 
-- [ ] **Deploy Completo:**
-  - [ ] Frontend em produção.
-  - [ ] Backend funcional e acessível publicamente.
-  - [ ] Banco de dados configurado e funcional.
+1. **Crawler** (`/crawler`): Scraping do DJE utilizando Python.
+2. **Backend** (`/backend`): API RESTful desenvolvida em Node.js.
+3. **Frontend** (`/frontend`): Interface de usuário baseada em React.js.
 
-- [ ] **Documentação:**
-  - [ ] Manual do Produto:
-    - [ ] Instruções de uso para usuários finais.
-  - [ ] Documentação Técnica:
-    - [ ] Rotas da API (Swagger/OpenAPI).
-    - [ ] Estrutura do banco de dados.
-    - [ ] Fluxos de automação e scraping.
-    - [ ] Dependências e configurações.
+---
 
-- [ ] **README Bem Estruturado:**
-  - [ ] Visão geral do projeto.
-  - [ ] Requisitos para execução local.
-  - [ ] Instruções de instalação e execução.
-  - [ ] Exemplos de requisições à API.
-  - [ ] Explicação do fluxo de trabalho do Kanban.
+## 🚀 Tecnologias Utilizadas
 
-## Requisitos Técnicos
-- **Backend:** Python para scraping; Node.js para API.
-- **Frontend:** React para interface do usuário.
-- **Banco de Dados:** Estrutura escalável e eficiente.
+- **Crawler**: Python, Selenium, BeautifulSoup.
+- **Backend**: Node.js, Prisma ORM, PostgreSQL.
+- **Frontend**: React.js, Vite, TailwindCSS.
+- **Infraestrutura**: Docker e Docker Compose.
+
+---
+
+## 🛠️ Configuração e Instalação
+
+### Pré-requisitos
+
+Certifique-se de ter as seguintes ferramentas instaladas:
+
+- [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/).
+
+---
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/pedrohygorveras/app_publications.git
+cd app_publications
+```
+
+---
+
+### 2. Configure os arquivos .env
+
+O projeto utiliza variáveis de ambiente para configurar suas dependências. Abaixo estão as configurações necessárias:
+
+#### Arquivo .env para o Backend (/backend/.env):
+
+```env
+DATABASE_URL="postgresql://admin:admin123@db_postgres:5432/db_publications?schema=public"
+APP_VERSION=1.0.0
+APP_NAME=JusCash
+APP_PORT=3021
+APP_HOST=0.0.0.0
+
+# Segurança
+SECRET=3cba8f43e8c94877a213f8d45c2f1b2e
+SECRET_CRYPT=9fdf84a232df4b2d9f8e13a6d12c7d3e
+REFRESH_TOKEN_SECRET=5ae9c78126e54fbab73a1b94c6eae987
+
+# Configuração de Token
+TOKEN_LIFE=15m
+REFRESH_TOKEN_LIFE=7d
+```
+
+#### Arquivo .env para o Frontend (/frontend/project/.env):
+
+```env
+docker-compose up --build
+```
+
+---
+
+### 3. Execute o projeto com Docker Compose
+
+Na raiz do projeto, execute o seguinte comando para iniciar todos os serviços:
+
+```bash
+docker-compose up --build
+```
+
+Este comando irá:
+
+- Construir e iniciar os containers do **Crawler**, **Backend** e **Frontend**.
+- Configurar o banco de dados automaticamente.
+
+---
+
+### 4. Acesse o sistema
+
+- **Frontend**: [http://localhost:3000](http://localhost:3000)
+- **Backend** (Swagger): [http://localhost:3021/docs](http://localhost:3021/docs)
+
+---
+
+### 5. Como rodar o Crawler
+
+1. **Entre no diretório do Crawler**:
+
+   ```bash
+   cd crawler
+   ```
+
+2. **Crie e ative um ambiente virtual**:
+
+   Para Linux/Mac:
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+   Para Windows:
+
+   ```bash
+   python -m venv venv
+   venv\Scripts\activate
+   ```
+
+3. **Instale as dependências**:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Edite os filtros (opcional)**:
+
+   Os filtros para a busca podem ser configurados no arquivo `config/settings.py`:
+
+   ```python
+   URL = "https://dje.tjsp.jus.br"
+   LOG_FILE = "./logs/scraper.log"
+   OUTPUT_FILE = "./data/output.csv"
+   FILTERS = {
+       "dtInicio": "19/11/2024",
+       "dtFim": "19/11/2024",
+       "cadernos": "20",
+       "pesquisaLivre": ["RPV", "pagamento pelo INSS"]
+   }
+   ```
+
+   - **`dtInicio` e `dtFim`**: Período de busca.
+   - **`cadernos`**: Identificação do caderno de busca (ex.: "20").
+   - **`pesquisaLivre`**: Termos de busca no conteúdo das publicações.
+
+5. **Execute o script principal**:
+
+   ```bash
+   python main.py
+   ```
