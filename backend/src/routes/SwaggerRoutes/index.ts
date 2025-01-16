@@ -18,8 +18,12 @@ class SwaggerConfig {
         },
         servers: [
           {
-            url: "http://3.143.224.130:3021/",
+            url: "https://backend.pedrohygorveras.ip-ddns.com/",
             description: "Production",
+          },
+          {
+            url: "http://3.143.224.130:3021/",
+            description: "Develop",
           },
           {
             url: "http://localhost:3021/",
