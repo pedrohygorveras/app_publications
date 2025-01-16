@@ -1,15 +1,10 @@
 import React from "react";
 import { openModalPublication } from "@/actions/ModalPublication";
-import { FaRegCalendar, FaRegClock } from "react-icons/fa";
+import { FaRegCalendar } from "react-icons/fa";
 import { useKanbanContext } from "@/contexts/Kanban/useContext";
 
 interface KanbanCardProps {
-  item: {
-    publication_id: string;
-    content: string;
-    publication_date: string;
-    created_at: string;
-  };
+  item: any;
   onDragStart: (event: React.DragEvent, itemId: string) => void;
   onDragEnd: () => void;
   isDragging: boolean;
@@ -40,18 +35,16 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
         isDragging ? "border-2 border-dashed border-primary" : ""
       }`}
     >
-      <p className="text-sm text-primary font-medium block">{item.content}</p>
-      <div className="mt-3 grid grid-cols-2">
-        <p className="flex items-center gap-1 truncate text-xs text-gray-500">
-          <FaRegClock />
-          {new Date(item.created_at).toLocaleTimeString([], {
+      <p className="text-sm text-primary font-medium block">
+        {item?.process_number}
+      </p>
+      <div className="mt-3">
+        <p className="flex items-center justify-end gap-1 truncate text-xs text-gray-500">
+          <FaRegCalendar />
+          {new Date(item.publication_date).toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
           })}
-        </p>
-        <p className="flex items-center gap-1 truncate text-xs text-gray-500">
-          <FaRegCalendar />
-          {new Date(item.publication_date).toLocaleDateString()}
         </p>
       </div>
     </button>
