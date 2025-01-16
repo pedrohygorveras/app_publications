@@ -13,26 +13,26 @@ services:
     volumes:
       - db_postgres_data:/var/lib/postgresql/data
 
-backend:
-  build:
-    context: ./backend
-    dockerfile: Dockerfile
-  container_name: backend
-  ports:
-    - "3021:3021"
-  volumes:
-    - ./backend/src:/app/src
-    - ./backend/prisma:/app/prisma
-  env_file:
-    - ./backend/.env
-  depends_on:
-    - db_postgres
-  entrypoint:
-    [
-      "sh",
-      "-c",
-      "sleep 20 && npx prisma generate && npx prisma migrate dev && npm run build",
-    ]
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "3021:3021"
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/prisma:/app/prisma
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db_postgres
+    entrypoint:
+      [
+        "sh",
+        "-c",
+        "sleep 20 && npx prisma generate && npx prisma migrate dev && npm run build",
+      ]
 
   frontend:
     build:
