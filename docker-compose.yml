@@ -27,12 +27,7 @@ services:
       - ./backend/.env
     depends_on:
       - db_postgres
-    entrypoint:
-      [
-        "sh",
-        "-c",
-        "sleep 20 && npx prisma generate && npx prisma migrate dev && npm run build",
-      ]
+    entrypoint: ["sh", "-c", "sleep 10 && npx prisma generate && npm run build"]
 
   frontend:
     build:
