@@ -42,8 +42,9 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
         <p className="flex items-center justify-end gap-1 truncate text-xs text-gray-500">
           <FaRegCalendar />
           {new Date(item.publication_date).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
           })}
         </p>
       </div>
