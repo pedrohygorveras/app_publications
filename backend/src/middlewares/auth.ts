@@ -15,7 +15,6 @@ class AuthMiddleware {
         req.user = decoded;
         next();
       } catch (error: any) {
-        console.log(error?.message);
         return res.status(401).json({
           error: "Invalid token.",
         });

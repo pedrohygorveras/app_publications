@@ -108,7 +108,6 @@ class PublicationRoutes {
           .isDecimal()
           .withMessage("Must be a decimal"),
       ],
-      authMiddleware,
       PublicationController.create
     );
 
