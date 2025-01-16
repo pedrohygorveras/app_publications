@@ -1,4 +1,7 @@
+import { useAuthContext } from "@/contexts/Auth/useContext";
 import { useKanbanContext } from "@/contexts/Kanban/useContext";
+import { useNotifyError } from "@/hooks/useNotifyError";
+import { updatePublication } from "@/services/publication";
 import { useEffect, useState } from "react";
 
 type KanbanItem = {
@@ -28,6 +31,9 @@ type KanbanColumns = {
 };
 
 export const useKanbanBoard = () => {
+  const { user } = useAuthContext();
+
+  const { notifyError } = useNotifyError();
   const { refresh, columns, setColumns } = useKanbanContext();
 
   const [draggingItemId, setDraggingItemId] = useState<string | null>(null);
@@ -37,8 +43,11 @@ export const useKanbanBoard = () => {
     setDraggingItemId(itemId);
   };
 
-  const handleDrop = (event: React.DragEvent, targetColumnId: string) => {
+  const handleDrop = async (event: React.DragEvent, targetColumnId: string) => {
+    if (!user) return;
     if (!columns) return;
+
+    const { accessToken } = user;
 
     const itemId = event.dataTransfer.getData("itemId");
     if (!itemId) return;
@@ -49,6 +58,21 @@ export const useKanbanBoard = () => {
 
     if (!sourceColumnId || sourceColumnId === targetColumnId) return;
 
+    const sourceType = columns[sourceColumnId].type;
+    const targetType = columns[targetColumnId].type;
+
+    const isValidMove =
+      (sourceType === "new" && targetType === "read") ||
+      (sourceType === "read" && targetType === "sent_to_lawyer") ||
+      (sourceType === "sent_to_lawyer" &&
+        (targetType === "read" || targetType === "completed"));
+
+    if (!isValidMove) {
+      notifyError("Você não pode mover esse item para essa coluna.");
+      setDraggingItemId(null);
+      return;
+    }
+
     const updatedColumns = moveItemBetweenColumns(
       columns,
       sourceColumnId,
@@ -57,6 +81,15 @@ export const useKanbanBoard = () => {
     );
 
     setColumns(updatedColumns);
+
+    const newStatus = columns[targetColumnId].type;
+
+    try {
+      await updatePublication(itemId, { status: newStatus }, accessToken);
+    } catch (error) {
+      notifyError("Erro ao atualizar o status no servidor.");
+    }
+
     setDraggingItemId(null);
   };
 

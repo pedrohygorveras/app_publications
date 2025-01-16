@@ -1,6 +1,7 @@
 import React from "react";
 import { openModalPublication } from "@/actions/ModalPublication";
 import { FaRegCalendar, FaRegClock } from "react-icons/fa";
+import { useKanbanContext } from "@/contexts/Kanban/useContext";
 
 interface KanbanCardProps {
   item: {
@@ -20,6 +21,8 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   onDragEnd,
   isDragging,
 }) => {
+  const { setSelected } = useKanbanContext();
+
   const handleDragStart = (event: React.DragEvent) => {
     onDragStart(event, item.publication_id);
   };
@@ -29,6 +32,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
       draggable
       onClick={() => {
         openModalPublication();
+        setSelected(item);
       }}
       onDragStart={handleDragStart}
       onDragEnd={onDragEnd}

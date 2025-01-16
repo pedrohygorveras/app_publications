@@ -70,7 +70,6 @@ const KanbanProvider = ({ children }: KanbanProviderProps) => {
       },
     };
 
-    console.log(data);
     setColumns(data);
   }, []);
 

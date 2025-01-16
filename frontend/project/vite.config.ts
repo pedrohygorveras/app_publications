@@ -9,10 +9,10 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname, "src"),
-    }
+    },
   },
   server: {
     host: true,
     port: 3000,
-  }
+  },
 });
